@@ -1,24 +1,31 @@
-from mcp_poc.app import generate_completion, client
+from unittest.mock import patch, MagicMock
+from mcp_poc.app import generate_completion
 
 
-def test_generate_completion(monkeypatch):
-    # Set a dummy environment variable so that
-    # client = OpenAI(api_key=os.getenv("OPENAI_API_KEY")) doesn’t fail
-    monkeypatch.setenv("OPENAI_API_KEY", "dummy_key")
+@patch("mcp_poc.app.get_client")
+def test_generate_completion(mock_get_client):
+    # Create mock response
+    mock_message = MagicMock()
+    mock_message.content = "Test response"
 
-    # Mock the OpenAI client response
-    class DummyChoice:
-        def __init__(self, content):
-            self.message = type("M", (), {"content": content})
+    mock_choice = MagicMock()
+    mock_choice.message = mock_message
 
-    class DummyResponse:
-        choices = [DummyChoice("Test response")]
+    mock_response = MagicMock()
+    mock_response.choices = [mock_choice]
 
-    # Patch the client.chat.completions.create method
-    monkeypatch.setattr(
-        client.chat.completions,
-        "create",
-        lambda model, messages: DummyResponse()
+    # Create mock client
+    mock_client = MagicMock()
+    mock_client.chat.completions.create.return_value = mock_response
+
+    # Set up the mock to return our mock client
+    mock_get_client.return_value = mock_client
+
+    # Test the function
+    result = generate_completion("Prompt")
+    assert result == "Test response"
+
+    # Verify the client was called correctly
+    mock_client.chat.completions.create.assert_called_once_with(
+        model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Prompt"}]
     )
-
-    assert generate_completion("Prompt") == "Test response"
