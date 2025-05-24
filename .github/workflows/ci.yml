@@ -29,7 +29,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          chmod +x scripts/install_deps.sh
           ./scripts/install_deps.sh
 
       - name: Lint code
