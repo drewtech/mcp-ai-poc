@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-ai-poc"
+version = "0.1.0"
+description = "Proof of concept for MCP AI integration"
+authors = [{ name = "Your Name" }]
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = []  # dependencies are managed via requirements.txt
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["mcp_poc*"]
+
+[tool.pytest]
+addopts = "-ra --tb=short"
