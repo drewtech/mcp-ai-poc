@@ -10,7 +10,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # 2. Install dependencies
-pip install -r requirements.txt
+./scripts/install_deps.sh
 
 # 3. Install the package in editable mode
 pip install -e .

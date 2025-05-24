@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true        # Cancel any in-flight run when a new commit arrives
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.11','3.12','3.13' ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}  # Always pin the version explicitly :contentReference[oaicite:1]{index=1}
+          cache: 'pip'                                  # Auto-cache your pip deps between runs :contentReference[oaicite:2]{index=2}
+
+      - name: Install dependencies
+        run: |
+          ./scripts/install_deps.sh
+
+      - name: Lint code
+        run: |
+          ruff check src
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+          pytest
