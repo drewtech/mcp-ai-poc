@@ -7,5 +7,5 @@ ruff check --fix src
 # 2. Run ruff formatter
 ruff format src
 
-# 2. Run tests with pytest
+# 3. Run tests with pytest
 pytest src/tests 
