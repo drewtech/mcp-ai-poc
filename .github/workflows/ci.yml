@@ -8,7 +8,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true        # Cancel any in-flight run when a new commit arrives :contentReference[oaicite:0]{index=0}
+  cancel-in-progress: true        # Cancel any in-flight run when a new commit arrives
 
 jobs:
   build-test:
