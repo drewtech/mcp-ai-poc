@@ -1,8 +1,9 @@
 import os
 from openai import OpenAI
 
-# Initialize the OpenAI client
+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 def generate_completion(prompt: str, model: str = "gpt-3.5-turbo") -> str:
     """

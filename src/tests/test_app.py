@@ -1,5 +1,6 @@
 from mcp_poc.app import generate_completion, client
 
+
 def test_generate_completion(monkeypatch):
     # Mock the OpenAI client response
     class DummyChoice:
