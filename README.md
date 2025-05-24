@@ -1,5 +1,7 @@
 # MCP AI POC
 
+[![CI](https://github.com/drewtech/mcp-ai-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/drewtech/mcp-ai-poc/actions)
+
 Proof of concept for integrating with the OpenAI API using the new Python SDK (>=1.0.0).
 
 ## Setup
@@ -14,3 +16,4 @@ source venv/bin/activate
 
 # 3. Install the package in editable mode
 pip install -e .
+```
