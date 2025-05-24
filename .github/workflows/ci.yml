@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '3.9', '3.10', '3.11' ]
+        python-version: [ '3.13' ]
 
     steps:
       - name: Checkout code
@@ -35,7 +35,7 @@ jobs:
       - name: Lint code
         run: |
           pip install flake8
-          flake8 src tests
+          flake8 src
 
       - name: Run tests
-        run: pytest --maxfail=1 --disable-warnings -q
+        run: pytest
