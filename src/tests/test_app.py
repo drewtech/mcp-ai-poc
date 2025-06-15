@@ -29,7 +29,7 @@ def test_generate_completion(mock_get_client):
 
     # Verify the client was called correctly
     mock_client.chat.completions.create.assert_called_once_with(
-        model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Prompt"}]
+        model="gpt-4o", messages="Prompt"
     )
 
 
