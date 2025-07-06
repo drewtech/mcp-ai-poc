@@ -42,6 +42,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+pip install -r dev-requirements.txt  # For development and testing
 
 # Install in editable mode
 pip install -e .
@@ -58,9 +59,22 @@ export OPENAI_API_KEY="your-api-key-here"
 
 ```bash
 # Start MCP server
-python run.py
+python src/run.py
 # or
 python -m mcp_poc.standalone_server
+```
+
+### 4. Run Tests (Optional)
+
+```bash
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run specific test file
+pytest src/tests/test_server.py
 ```
 
 ## MCP Integration
@@ -78,7 +92,7 @@ Add to your MCP client configuration:
   "mcpServers": {
     "mcp-ai-poc": {
       "command": "python",
-      "args": ["/path/to/mcp-ai-poc/run.py"],
+      "args": ["/path/to/mcp-ai-poc/src/run.py"],
       "env": {
         "OPENAI_API_KEY": "your-api-key-here"
       }
@@ -120,6 +134,7 @@ This project provides a full-featured MCP server with production-ready capabilit
 - **JSON-RPC Protocol**: Implements MCP's communication protocol
 - **Modular Design**: Separate modules for AI tools, server logic, and utilities
 - **Error Handling**: Robust error handling for production use
+- **Comprehensive Testing**: Full test suite with pytest for reliability
 
 ### 💡 **Practical AI Tools**
 
@@ -162,25 +177,33 @@ Built-in resources provide instant access to:
 ## Project Structure
 
 ```
-src/mcp_poc/
-├── app.py              # Main application (chat + server entry)
-├── ai_tools.py         # OpenAI client and utilities
-├── standalone_server.py # MCP server implementation
-├── mcp_server.py       # Alternative MCP server (requires mcp package)
-└── __init__.py         # Package initialization
+src/
+├── mcp_poc/                    # Main package
+│   ├── __init__.py            # Package initialization
+│   ├── app.py                 # Main application (chat + server entry)
+│   ├── ai_tools.py            # OpenAI client and utilities
+│   ├── standalone_server.py   # MCP server implementation
+│   └── mcp_server.py          # Alternative MCP server (requires mcp package)
+├── tests/                     # Test suite
+│   ├── test_app.py           # Application tests
+│   └── test_server.py        # MCP server tests
+└── run.py                     # Main entry point
 
-Configuration:
-├── mcp_config.json     # MCP client configuration example
-├── run.py              # Main entry point
-└── requirements.txt    # Dependencies (enhanced)
+Configuration & Dependencies:
+├── requirements.txt           # Runtime dependencies
+├── dev-requirements.txt       # Development and testing dependencies
+├── pyproject.toml            # Project configuration and build settings
+└── mcp_config.json           # MCP client configuration example
 
-Documentation:          # Comprehensive docs (existing)
-├── CONTEXT.md          # Project overview
-├── ARCHITECTURE.md     # Technical details
-├── API.md              # API reference
-├── DEVELOPMENT.md      # Development guide
-├── EXAMPLES.md         # Usage examples
-└── TROUBLESHOOTING.md  # Common issues
+Documentation:                # Comprehensive docs
+├── docs/
+│   ├── CONTEXT.md            # Project overview
+│   ├── ARCHITECTURE.md       # Technical details
+│   ├── API.md                # API reference
+│   ├── DEVELOPMENT.md        # Development guide
+│   ├── EXAMPLES.md           # Usage examples
+│   └── TROUBLESHOOTING.md    # Common issues
+└── README.md                 # This file
 ```
 
 ## Documentation

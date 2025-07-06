@@ -4,15 +4,16 @@ Test script for the MCP AI POC server.
 Tests basic MCP server functionality.
 """
 
-import asyncio
 import sys
 import os
 from pathlib import Path
+import pytest
 
 # Add the src directory to the Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 
+@pytest.mark.asyncio
 async def test_mcp_server():
     """Test the MCP server JSON-RPC functionality."""
     print("\nTesting MCP server...")
@@ -41,12 +42,13 @@ async def test_mcp_server():
             f"✓ Resources listing works ({len(resources_response['resources'])} resources)"
         )
 
-        return True
+        assert True  # Test passed
     except Exception as e:
         print(f"✗ MCP server test failed: {e}")
-        return False
+        assert False, f"MCP server test failed: {e}"
 
 
+@pytest.mark.asyncio
 async def test_json_rpc_format():
     """Test JSON-RPC request/response format."""
     print("\nTesting JSON-RPC format...")
@@ -81,12 +83,12 @@ async def test_json_rpc_format():
         assert "error" in error_response
         print("✓ Error handling works correctly")
 
-        return True
     except Exception as e:
         print(f"✗ JSON-RPC format test failed: {e}")
-        return False
+        assert False, f"JSON-RPC format test failed: {e}"
 
 
+@pytest.mark.asyncio
 async def test_resource_content():
     """Test that resources return expected content."""
     print("\nTesting resource content...")
@@ -115,10 +117,9 @@ async def test_resource_content():
         assert "Singleton" in content
         print("✓ Design patterns resource content valid")
 
-        return True
     except Exception as e:
         print(f"✗ Resource content test failed: {e}")
-        return False
+        assert False, f"Resource content test failed: {e}"
 
 
 def test_project_structure():
@@ -144,58 +145,25 @@ def test_project_structure():
 
     if missing_files:
         print(f"✗ Missing files: {missing_files}")
-        return False
+        assert False, f"Missing files: {missing_files}"
     else:
         print(f"✓ All {len(required_files)} required files present")
-        return True
+        assert True
 
 
-async def run_async_tests():
-    """Run async tests."""
-    async_tests = [test_mcp_server, test_json_rpc_format, test_resource_content]
-
-    passed = 0
-    for test in async_tests:
-        if await test():
-            passed += 1
-
-    return passed, len(async_tests)
+def run_async_tests():
+    """Run async tests. (This function is not a test itself)"""
+    # This function is no longer needed since pytest handles async tests directly
+    pass
 
 
-async def main():
-    """Run all tests."""
-    print("MCP AI POC Test Suite")
-    print("=" * 40)
-
-    # Run sync tests
-    sync_tests = [test_project_structure]
-
-    passed = 0
-    total = len(sync_tests)
-
-    for test in sync_tests:
-        if test():
-            passed += 1
-
-    # Run async tests
-    async_passed, async_total = await run_async_tests()
-    passed += async_passed
-    total += async_total
-
-    print("\n" + "=" * 40)
-    print(f"Test Results: {passed}/{total} tests passed")
-
-    if passed == total:
-        print("🎉 All tests passed! Your MCP server is ready to use.")
-        print("\nNext steps:")
-        print("1. Set your OPENAI_API_KEY environment variable")
-        print("2. Run 'python src/run.py --server' for MCP server mode")
-        print("3. Configure your MCP client using mcp_config.json")
-        return 0
-    else:
-        print("❌ Some tests failed. Please check the errors above.")
-        return 1
+def main_runner():
+    """Run all tests. (This function is not a test itself)"""
+    # This function is no longer needed since pytest handles test execution
+    pass
 
 
 if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    # For standalone execution (not when run via pytest)
+    print("This file contains pytest tests. Run with: pytest src/test_server.py")
+    print("For the full test suite, run: pytest")
