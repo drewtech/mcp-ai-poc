@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcp-ai-poc": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_poc.standalone_server"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    }
+  }
+}

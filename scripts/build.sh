@@ -8,4 +8,4 @@ ruff check --fix src
 ruff format src
 
 # 3. Run tests with pytest
-pytest src/tests 
+pytest -v src/tests 
