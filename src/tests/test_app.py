@@ -1,36 +1,7 @@
 from unittest.mock import patch, MagicMock
 import pytest
 import os
-from mcp_poc.app import generate_completion, OpenAIClient
-
-
-@patch("mcp_poc.app._openai_client.get_client")
-def test_generate_completion(mock_get_client):
-    # Create mock response
-    mock_message = MagicMock()
-    mock_message.content = "Test response"
-
-    mock_choice = MagicMock()
-    mock_choice.message = mock_message
-
-    mock_response = MagicMock()
-    mock_response.choices = [mock_choice]
-
-    # Create mock client
-    mock_client = MagicMock()
-    mock_client.chat.completions.create.return_value = mock_response
-
-    # Set up the mock to return our mock client
-    mock_get_client.return_value = mock_client
-
-    # Test the function
-    result = generate_completion("Prompt")
-    assert result == "Test response"
-
-    # Verify the client was called correctly
-    mock_client.chat.completions.create.assert_called_once_with(
-        model="gpt-4o", messages="Prompt"
-    )
+from mcp_poc.ai_tools import OpenAIClient
 
 
 def test_openai_client_missing_api_key():
@@ -51,3 +22,34 @@ def test_openai_client_empty_api_key():
             ValueError, match="OPENAI_API_KEY environment variable must be set"
         ):
             client.get_client()
+
+
+@patch("mcp_poc.ai_tools.OpenAI")
+def test_openai_client_with_valid_api_key(mock_openai):
+    """Test that OpenAIClient creates client when OPENAI_API_KEY is set."""
+    with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}):
+        client = OpenAIClient()
+        result = client.get_client()
+        
+        # Should have called OpenAI constructor with the API key
+        mock_openai.assert_called_once_with(api_key="test-key")
+        
+        # Should return the mock client
+        assert result == mock_openai.return_value
+
+
+def test_openai_client_singleton_behavior():
+    """Test that OpenAIClient reuses the same client instance."""
+    with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}):
+        with patch("mcp_poc.ai_tools.OpenAI") as mock_openai:
+            client = OpenAIClient()
+            
+            # Get client twice
+            result1 = client.get_client()
+            result2 = client.get_client()
+            
+            # Should have called OpenAI constructor only once
+            assert mock_openai.call_count == 1
+            
+            # Should return same instance both times
+            assert result1 == result2
