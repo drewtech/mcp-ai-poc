@@ -8,7 +8,7 @@ from openai import OpenAI
 
 class OpenAIClient:
     """Manages OpenAI API client with singleton-like behavior."""
-    
+
     def __init__(self):
         self._client = None
 

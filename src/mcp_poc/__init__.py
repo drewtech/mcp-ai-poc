@@ -11,7 +11,7 @@ This package provides an AI-powered MCP server with tools for:
 Usage:
     # Start MCP server
     python run.py
-    
+
     # Or via module
     python -m mcp_poc.standalone_server
 """
@@ -24,7 +24,4 @@ __description__ = "MCP server with AI-powered development tools"
 from .ai_tools import OpenAIClient
 from .standalone_server import JSONRPCServer
 
-__all__ = [
-    "OpenAIClient",
-    "JSONRPCServer"
-]
+__all__ = ["OpenAIClient", "JSONRPCServer"]
