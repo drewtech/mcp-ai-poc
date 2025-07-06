@@ -1,4 +1,4 @@
-# MCP AI POC
+# MCP AI POC (Still in progress)
 
 [![CI](https://github.com/drewtech/mcp-ai-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/drewtech/mcp-ai-poc/actions)
 
